@@ -15,7 +15,7 @@ import requests # doc: http://docs.python-requests.org/
 from login_info import login_info
 
 payload = {'username': login_info['user'], 'password': login_info['password']}
-p2 = {'funnel_id': 1, 'lead_type': 1} # we don't need 'users_id'... woohoo!!!
+p2 = {'funnel_id': 1, 'lead_type': 1} # funnel_id and lead_type will have to change to get all the leads and members from all the different funnels
 
 session = requests.session()
 r = session.post(login_info['site'], data=payload)
@@ -30,12 +30,15 @@ if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successfu
                 ascii_only += char
         
         ascii_only = ascii_only.split('<td>')
-        emails = {}
-        emails = set(emails)
+        emails = open('emails.txt','w')
+
         for x in ascii_only:
             if '@' in x:
                 if not x.startswith('<'):
-                    emails.add(x[:-7]) # we don't want the '</td>\n' stored
-        print(emails)
+                    emails.write(x[:-7]+'\n') # we don't want the '</td>' stored
+        
+        print("Emails stores in 'emails.txt'")
+        emails.close()
+        
 else:
     print('Something went wrong. Login not successful!')
