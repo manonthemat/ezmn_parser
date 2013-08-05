@@ -37,9 +37,9 @@ def main():
                 if '@' in x:
                     if not x.startswith('<'):
                         emails.add(x[:-7]) # we don't want the '</td>' stored
-            for email in emails:
+            for i, email in enumerate(emails):
                 email_file.write(email+'\n')
-            print("Emails saved in 'emails.txt'")
+            print(i+1, "Emails saved in 'emails.txt'")
             email_file.close()
             
     else:
