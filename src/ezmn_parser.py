@@ -37,7 +37,7 @@ if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successfu
                 if not x.startswith('<'):
                     emails.write(x[:-7]+'\n') # we don't want the '</td>' stored
         
-        print("Emails stores in 'emails.txt'")
+        print("Emails saved in 'emails.txt'")
         emails.close()
         
 else:
