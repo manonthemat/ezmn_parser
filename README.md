@@ -11,3 +11,9 @@ The EZ Money Network is a free system for GVO, PureLeverage and Empower Network 
 You don't have an account yet? Sign up here: http://ezmoneynetwork.com/signup.php?user=manonthemat
 
 Set your USERNAME and PASSWORD in src/login_info.py
+
+
+REQUIREMENTS
+=============================
+Python 3.(3.2)
+Requests (tested with v.1.2.3) http://docs.python-requests.org/
