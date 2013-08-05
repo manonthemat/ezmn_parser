@@ -14,31 +14,36 @@ import requests # doc: http://docs.python-requests.org/
 
 from login_info import login_info
 
-payload = {'username': login_info['user'], 'password': login_info['password']}
-p2 = {'funnel_id': 1, 'lead_type': 1} # funnel_id and lead_type will have to change to get all the leads and members from all the different funnels
-
-session = requests.session()
-r = session.post(login_info['site'], data=payload)
-if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successful
-    # go to Lead & Member manager in business center
-    r = session.post('http://ezmoneynetwork.com/members/ajax/lead_member.php', data=p2)
-    data = r.text
-    if '@' in data:
-        ascii_only = ''
-        for char in data:
-            if ord(char) < 128:
-                ascii_only += char
+def main():
+    payload = {'username': login_info['user'], 'password': login_info['password']}
+    p2 = {'funnel_id': 1, 'lead_type': 1} # funnel_id and lead_type will have to change to get all the leads and members from all the different funnels
+    
+    session = requests.session()
+    r = session.post(login_info['site'], data=payload)
+    if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successful
+        # go to Lead & Member manager in business center
+        r = session.post('http://ezmoneynetwork.com/members/ajax/lead_member.php', data=p2)
+        data = r.text
+        if '@' in data:
+            ascii_only = ''
+            for char in data:
+                if ord(char) < 128:
+                    ascii_only += char
+            
+            ascii_only = ascii_only.split('<td>')
+            emails = set() # using a set first in order to get rid of duplicate emails
+            email_file = open('emails.txt','w')
+            for x in ascii_only:
+                if '@' in x:
+                    if not x.startswith('<'):
+                        emails.add(x[:-7]) # we don't want the '</td>' stored
+            for email in emails:
+                email_file.write(email+'\n')
+            print("Emails saved in 'emails.txt'")
+            email_file.close()
+            
+    else:
+        print('Something went wrong. Login not successful!')
         
-        ascii_only = ascii_only.split('<td>')
-        emails = open('emails.txt','w')
-
-        for x in ascii_only:
-            if '@' in x:
-                if not x.startswith('<'):
-                    emails.write(x[:-7]+'\n') # we don't want the '</td>' stored
-        
-        print("Emails saved in 'emails.txt'")
-        emails.close()
-        
-else:
-    print('Something went wrong. Login not successful!')
+if __name__ == "__main__":
+    main()

@@ -14,8 +14,8 @@ Set your USERNAME and PASSWORD in src/login_info.py
 
 REQUIREMENTS
 =============================
-Python 3.(3.2)
-Requests (tested with v.1.2.3) http://docs.python-requests.org/
+- Python 3.(3.2)
+- Requests (tested with v.1.2.3) http://docs.python-requests.org/
 
 TODO
 =============================
