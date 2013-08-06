@@ -14,12 +14,13 @@ Set your USERNAME and PASSWORD in src/login_info.py
 
 REQUIREMENTS
 =============================
-- Python 3.(3.2)
+- Python 3.3.2 or newer
 - Requests (tested with v.1.2.3) http://docs.python-requests.org/
 - Beautiful Soup 4.2.0 (for en_parser.py) http://www.crummy.com/software/BeautifulSoup/
 
 TODO
 =============================
-- Fixing known issue: ezmn_parser.py ezmn members doesn't get any emails
+- Improving usability
 - Build a GUI
+- Refactor code
 - Support different formats for scraped email addresses

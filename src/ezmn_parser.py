@@ -78,7 +78,7 @@ def get_emails(funnel=EZMF, lead_type=LEADS):
             return funnelname+'_'+lead_typename+'.txt'
             
     else:
-        print('Something went wrong. Login not successful!')
+        print('Login not successful... Please check your settings in the file login_info.py')
 
 def get_all():
     '''
