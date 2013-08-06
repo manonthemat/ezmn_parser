@@ -14,9 +14,25 @@ import requests # doc: http://docs.python-requests.org/
 
 from login_info import login_info
 
-def main():
+# funnel_ids
+EZMF = 1
+EZMN = 5
+
+# lead_types
+# TODO: The HTML document for members is formatted differently. Parsing for email-addresses does not work yet
+LEADS = 1
+MEMBERS = 2
+
+def get_emails(funnel=EZMN, lead_type=LEADS):
     payload = {'username': login_info['user'], 'password': login_info['password']}
-    p2 = {'funnel_id': 1, 'lead_type': 1} # funnel_id and lead_type will have to change to get all the leads and members from all the different funnels
+    p2 = {'funnel_id': funnel, 'lead_type': lead_type}
+    
+    if funnel == EZMN:
+        funnelname = 'EZMN'
+    elif funnel == EZMF:
+        funnelname = 'EZMF'
+    else:
+        funnelname = 'emails'
     
     session = requests.session()
     r = session.post(login_info['site'], data=payload)
@@ -32,18 +48,18 @@ def main():
             
             ascii_only = ascii_only.split('<td>')
             emails = set() # using a set first in order to get rid of duplicate emails
-            email_file = open('emails.txt','w')
+            email_file = open(funnelname+'.txt','w')
             for x in ascii_only:
                 if '@' in x:
                     if not x.startswith('<'):
                         emails.add(x[:-7]) # we don't want the '</td>' stored
             for i, email in enumerate(emails):
                 email_file.write(email+'\n')
-            print(i+1, "Emails saved in 'emails.txt'")
+            print(i+1, "Emails saved in '"+funnelname+".txt'")
             email_file.close()
             
     else:
         print('Something went wrong. Login not successful!')
         
 if __name__ == "__main__":
-    main()
+    get_emails(funnel=5)
