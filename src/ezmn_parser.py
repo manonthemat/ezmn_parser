@@ -10,7 +10,9 @@ The EZ Money Network is a free system for GVO, PureLeverage and Empower Network 
 You don't have an account yet? Sign up here: http://ezmoneynetwork.com/signup.php?user=manonthemat
 '''
 
-import requests # doc: http://docs.python-requests.org/
+# BUG: ezmn_parser.py ezmn members doesn't get any email addresses at this point
+
+import requests # doc: http://docs.python-requests.orfg/
 
 from login_info import login_info
 from sys import argv
@@ -20,11 +22,10 @@ EZMF = 1
 EZMN = 5
 
 # lead_types
-# TODO: The HTML document for members is formatted differently. Parsing for email-addresses there does not work yet
 LEADS = 1
 MEMBERS = 2
 
-def get_emails(funnel=EZMN, lead_type=LEADS):
+def get_emails(funnel=EZMF, lead_type=LEADS):
     payload = {'username': login_info['user'], 'password': login_info['password']}
     p2 = {'funnel_id': funnel, 'lead_type': lead_type}
     
@@ -34,6 +35,11 @@ def get_emails(funnel=EZMN, lead_type=LEADS):
         funnelname = 'EZMF'
     else:
         funnelname = 'emails'
+        
+    if lead_type == LEADS or lead_type == 'LEADS':
+        lead_typename = 'leads'
+    else:
+        lead_typename = 'members'
     
     session = requests.session()
     r = session.post(login_info['site'], data=payload)
@@ -47,18 +53,29 @@ def get_emails(funnel=EZMN, lead_type=LEADS):
                 if ord(char) < 128:
                     ascii_only += char
             
-            ascii_only = ascii_only.split('<td>')
             emails = set() # using a set first in order to get rid of duplicate emails
-            email_file = open(funnelname+'.txt','w')
-            for x in ascii_only:
-                if '@' in x:
-                    if not x.startswith('<'):
-                        emails.add(x[:-7]) # we don't want the '</td>' stored
+            email_file = open(funnelname+'_'+lead_typename+'.txt','w')
+            
+            if lead_type == LEADS:
+                ascii_only = ascii_only.split('<td>')
+                for x in ascii_only:
+                    if '@' in x:
+                        if not x.startswith('<'):
+                            emails.add(x[:-7]) # we don't want the '</td>' stored
+                            
+            else:
+                ascii_only = ascii_only.split("display_info('")
+                for x in ascii_only:
+                    if '@' in x:
+                        for i, s in enumerate(x): # searching for the first '
+                            if s == "'": break;
+                        emails.add(x[:i])
+                
             for i, email in enumerate(emails):
                 email_file.write(email+'\n')
-            print(i+1, "Emails saved in '"+funnelname+".txt'")
+            print(i+1, "Emails saved in '"+funnelname+'_'+lead_typename+".txt'")
             email_file.close()
-            return funnelname+'.txt'
+            return funnelname+'_'+lead_typename+'.txt'
             
     else:
         print('Something went wrong. Login not successful!')
@@ -67,15 +84,23 @@ def get_all():
     '''
     Getting all e-mail addresses and save them in a single file <email.txt>
     '''
-    ezmn_file = open(get_emails(funnel=EZMN), 'r')
-    ezmf_file = open(get_emails(funnel=EZMF), 'r')
+    ezmn_leads_file = open(get_emails(funnel=EZMN), 'r')
+    #ezmn_members_file = open(get_emails(funnel=EZMN, lead_type=MEMBERS), 'r')
+    ezmf_leads_file = open(get_emails(funnel=EZMF), 'r')
+    ezmf_members_file = open(get_emails(funnel=EZMF, lead_type=MEMBERS), 'r')
     emails = set()
-    for email in ezmn_file.readlines():
+    for email in ezmn_leads_file.readlines():
         emails.add(email)
-    ezmn_file.close()
-    for email in ezmf_file.readlines():
+    ezmn_leads_file.close()
+    #for email in ezmn_members_file.readlines():
+    #    emails.add(email)
+    #ezmn_members_file.close()
+    for email in ezmf_leads_file.readlines():
         emails.add(email)
-    ezmf_file.close()
+    ezmf_leads_file.close()
+    for email in ezmf_members_file.readlines():
+        emails.add(email)
+    ezmf_members_file.close()
     email_file = open('emails.txt','w')
     for i, email in enumerate(emails):
         email_file.write(email)
@@ -84,21 +109,38 @@ def get_all():
     
         
 if __name__ == "__main__":
-    if len(argv) < 2:
-        print("""Usage: python3 ezmn_parser.py (FUNNEL)
+    if len(argv) < 3:
+        if len(argv) > 1:
+            if argv[1].upper() == 'ALL':
+                get_all()
+                exit(0)
+        print("""Usage: python3 ezmn_parser.py (FUNNEL) (LEADTYPE)
         
         FUNNEL:
-            ezmn - for EZ Money Network Leads
-            ezmf - for EZ Money Formula Leads
-            ALL
+            ezmn    - for EZ Money Network Leads
+            ezmf    - for EZ Money Formula Leads
+            ALL     - both funnels w/ leads and member emails
+            
+        LEADTYPE:
+            leads   - for leads
+            members - for members
             
         ------
         Examples:
-            python3 ezmn_parser.py ezmn    -- Gets the Email addresses of your EZMN leads
-            python3 ezmn_parser.py ezmf    -- Gets the Email addresses of your EZMF leads
-            python3 ezmn_parser.py all     -- Getting leads from both funnels and store unique Emails in emails.txt
+            python3 ezmn_parser.py ezmn leads -- Gets the Email addresses of your EZMN leads
+            python3 ezmn_parser.py ezmf members   -- Gets the Email addresses of your EZMF members
+            python3 ezmn_parser.py all     -- Scraping and saving all unique Emails in emails.txt
         """)
         exit(0)
-    if argv[1].upper() == 'EZMF': get_emails(funnel=EZMF);
-    elif argv[1].upper() == 'EZMN': get_emails(funnel=EZMN);
-    else: get_all()
+    if argv[1].upper() == 'EZMF':
+        if argv[2].upper() == 'LEADS':
+            get_emails(funnel=EZMF, lead_type=LEADS)
+        else:
+            get_emails(funnel=EZMF, lead_type=MEMBERS)
+    elif argv[1].upper() == 'EZMN':
+        if argv[2].upper() == 'LEADS':
+            get_emails(funnel=EZMN, lead_type=LEADS)
+        else:
+            get_emails(funnel=EZMN, lead_type=MEMBERS)
+    else:
+        get_all()

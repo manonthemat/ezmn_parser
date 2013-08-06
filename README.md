@@ -19,6 +19,6 @@ REQUIREMENTS
 
 TODO
 =============================
-- Getting all the Email-Addresses from all the different funnels.
+- Fixing known issue: ezmn_parser.py ezmn members doesn't get any emails
 - Build a GUI
 - Support different formats for scraped email addresses
