@@ -28,7 +28,7 @@ EZMN_login_info = {
             }
 
 EN_login_info = {
-                'site': "https://www.empowernetwork.com/login",
+                'site': "https://www.empowernetwork.com/login.php",
                 'user': EN_USERNAME,
                 'password': EN_PASSWORD   
             }
