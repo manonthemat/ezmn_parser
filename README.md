@@ -16,6 +16,7 @@ REQUIREMENTS
 =============================
 - Python 3.(3.2)
 - Requests (tested with v.1.2.3) http://docs.python-requests.org/
+- Beautiful Soup 4.2.0 (for en_parser.py) http://www.crummy.com/software/BeautifulSoup/
 
 TODO
 =============================
