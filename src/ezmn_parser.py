@@ -14,7 +14,7 @@ You don't have an account yet? Sign up here: http://ezmoneynetwork.com/signup.ph
 
 import requests # doc: http://docs.python-requests.orfg/
 
-from login_info import login_info
+from login_info import EZMN_login_info
 from sys import argv
 
 # funnel_ids
@@ -26,7 +26,7 @@ LEADS = 1
 MEMBERS = 2
 
 def get_emails(funnel=EZMF, lead_type=LEADS):
-    payload = {'username': login_info['user'], 'password': login_info['password']}
+    payload = {'username': EZMN_login_info['user'], 'password': EZMN_login_info['password']}
     p2 = {'funnel_id': funnel, 'lead_type': lead_type}
     
     if funnel == EZMN or funnel == 'EZMN':
@@ -42,7 +42,7 @@ def get_emails(funnel=EZMF, lead_type=LEADS):
         lead_typename = 'members'
     
     session = requests.session()
-    r = session.post(login_info['site'], data=payload)
+    r = session.post(EZMN_login_info['site'], data=payload)
     if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successful
         # go to Lead & Member manager in business center
         r = session.post('http://ezmoneynetwork.com/members/ajax/lead_member.php', data=p2)
@@ -105,7 +105,7 @@ def get_all():
     for i, email in enumerate(emails):
         email_file.write(email)
     email_file.close()
-    print(i+1, "unique email addresses stores in 'emails.txt'")
+    print(i+1, "unique email addresses stored in 'emails.txt'")
     
         
 if __name__ == "__main__":
