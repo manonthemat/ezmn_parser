@@ -72,4 +72,5 @@ def EN_get_emails(etype="basics_paid"):
     
     
 if __name__ == "__main__":
-    print(emails_to_file.store(EN_get_emails(etype='basics_paid'), 'EN.txt'))
+    print(emails_to_file.store(EN_get_emails(etype='basics_paid'), 'EN.txt', delimiter=','))
+    
