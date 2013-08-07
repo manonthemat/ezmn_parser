@@ -9,3 +9,13 @@ def store(email_list, filename, delimiter='\n'):
         f.write(email+delimiter)
     f.close()
     return str(i+1)+' Emails stored in '+filename
+
+def store_from_gui(emails, filename, delimiter='\n'):
+    '''emails - a string (usually from gui's emailbox of class Application)'''
+    if delimiter != '\n':
+        f = open(filename, 'w')
+        f.write(emails)
+        f.close()
+    else:
+        email_list = emails.split()
+        store(email_list, filename, delimiter=delimiter)

@@ -22,4 +22,4 @@ TODO
 =============================
 - Improving usability
 - Refactor code
-- Support different formats for scraped email addresses
+- Add functionality for GVO and PureLeverage leads and customers
