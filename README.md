@@ -21,6 +21,5 @@ REQUIREMENTS
 TODO
 =============================
 - Improving usability
-- Build a GUI
 - Refactor code
 - Support different formats for scraped email addresses
