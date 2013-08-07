@@ -12,6 +12,8 @@ import en_parser
 import emails_to_file
 
 class Application(Frame):
+    delimiter = '\n'
+        
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.grid()
@@ -55,11 +57,11 @@ class Application(Frame):
         
         menu_file = Menu(menubar)
         menu_file.add_command(label='Save as...', command=self.saveToFile)
-        #menu_file.add_command(label='Settings', command=self.openSettings)
+        menu_file.add_command(label='Settings', command=self.openSettings)
         menu_file.add_separator()
         menu_file.add_command(label='Exit', command=exit)
         menubar.add_cascade(menu=menu_file, label='File')
-        self.pack()
+
         
     def collect(self):
         emails = set()
@@ -91,12 +93,24 @@ class Application(Frame):
             # open File Dialog
             filename = filedialog.asksaveasfile()
             # call emails_to_file.store
-            emails_to_file.store_from_gui(self.emailbox.get(1.0, END), filename.name)
+            emails_to_file.store_from_gui(self.emailbox.get(1.0, END), filename.name, delimiter=self.delimiter)
         else:
             # Show warning when 'save as...' is selected prior of collecting emails
             showwarning('User advice', 'Collect Emails first, before you save them.')
+    
     def openSettings(self):
-        pass
+        settingswindow = Toplevel(self)
+        settingswindow.title('EZ Email Parser - Settings')
+        delimiterframe = ttk.Labelframe(settingswindow, text='Delimiter')
+        delimiterframe.grid(column=0, row=0)
+        self.rDelimiter = StringVar()
+        ttk.Radiobutton(delimiterframe, text='new line', variable=self.rDelimiter, value='\n').grid(column=0, row=0, sticky=W)
+        ttk.Radiobutton(delimiterframe, text='comma', variable=self.rDelimiter, value=',').grid(column=0, row=1, sticky=W)
+        ttk.Radiobutton(delimiterframe, text='whitespace', variable=self.rDelimiter, value=' ').grid(column=0, row=2, sticky=W)
+        ttk.Button(settingswindow, text='Save settings', command=self.saveSettings).grid()
+        
+    def saveSettings(self):
+        self.delimiter = self.rDelimiter.get()
 
 root = Tk()
 root.title('EZ Email Parser')

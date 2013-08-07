@@ -12,7 +12,7 @@ def store(email_list, filename, delimiter='\n'):
 
 def store_from_gui(emails, filename, delimiter='\n'):
     '''emails - a string (usually from gui's emailbox of class Application)'''
-    if delimiter != '\n':
+    if delimiter == '\n':
         f = open(filename, 'w')
         f.write(emails)
         f.close()
