@@ -99,18 +99,19 @@ class Application(Frame):
             showwarning('User advice', 'Collect Emails first, before you save them.')
     
     def openSettings(self):
-        settingswindow = Toplevel(self)
-        settingswindow.title('EZ Email Parser - Settings')
-        delimiterframe = ttk.Labelframe(settingswindow, text='Delimiter')
+        self.settingswindow = Toplevel(self)
+        self.settingswindow.title('EZ Email Parser - Settings')
+        delimiterframe = ttk.Labelframe(self.settingswindow, text='Delimiter')
         delimiterframe.grid(column=0, row=0)
         self.rDelimiter = StringVar()
         ttk.Radiobutton(delimiterframe, text='new line', variable=self.rDelimiter, value='\n').grid(column=0, row=0, sticky=W)
         ttk.Radiobutton(delimiterframe, text='comma', variable=self.rDelimiter, value=',').grid(column=0, row=1, sticky=W)
         ttk.Radiobutton(delimiterframe, text='whitespace', variable=self.rDelimiter, value=' ').grid(column=0, row=2, sticky=W)
-        ttk.Button(settingswindow, text='Save settings', command=self.saveSettings).grid()
+        ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid()
         
     def saveSettings(self):
         self.delimiter = self.rDelimiter.get()
+        self.settingswindow.destroy()
 
 root = Tk()
 root.title('EZ Email Parser')
