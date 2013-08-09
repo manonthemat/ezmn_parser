@@ -10,6 +10,7 @@ from tkinter.messagebox import showwarning
 import ezmn_parser
 import en_parser
 import emails_to_file
+import ripple_parser
 
 class Application(Frame):
     delimiter = '\n'
@@ -32,22 +33,23 @@ class Application(Frame):
         self.ezmn_leads = StringVar()
         self.en_basics_paid = StringVar()
         self.en_basics_unpaid = StringVar()
+        self.rippln_leads = StringVar()
         ttk.Checkbutton(mainframe, text='EZ Money Formula Leads', variable=self.ezmf_leads).grid(column=0, row=1, sticky=W)
         ttk.Checkbutton(mainframe, text='EZ Money Formula Members', variable=self.ezmf_members).grid(column=0, row=2, sticky=W)
         ttk.Checkbutton(mainframe, text='EZ Money Network Leads', variable=self.ezmn_leads).grid(column=0, row=3, sticky=W)
         ttk.Checkbutton(mainframe, text='Empower Network Basic Members (paid)', variable=self.en_basics_paid).grid(column=0, row=4, sticky=W)
         ttk.Checkbutton(mainframe, text='Empower Network Members (unpaid)', variable=self.en_basics_unpaid).grid(column=0, row=5, sticky=W)
+        ttk.Checkbutton(mainframe, text='Rippln (very slow... might take a few minutes)', variable=self.rippln_leads).grid(column=0, row=6, sticky=W)
+        ttk.Button(mainframe, text='Collect Emails', command=self.collect).grid(column=0, row=7, columnspan=2)
         
-        ttk.Button(mainframe, text='Collect Emails', command=self.collect).grid(column=0, row=6, columnspan=2)
-        
-        ttk.Label(mainframe, text='Collected Email addresses below...', padding='0 20 0 0').grid(column=0, row=7, columnspan=2)
+        ttk.Label(mainframe, text='Collected Email addresses below...', padding='0 20 0 0').grid(column=0, row=8, columnspan=2)
         
         self.emailbox = Text(mainframe)
-        self.emailbox.grid(column=0, row=8, columnspan=2)
+        self.emailbox.grid(column=0, row=9, columnspan=2)
         
         self.amount_emails = IntVar()
-        ttk.Label(mainframe, textvariable=self.amount_emails).grid(column=0, row=9, sticky=E)
-        ttk.Label(mainframe, text='unique Emails collected').grid(column=1, row=9)
+        ttk.Label(mainframe, textvariable=self.amount_emails).grid(column=0, row=10, sticky=E)
+        ttk.Label(mainframe, text='unique Emails collected').grid(column=1, row=10)
         
         ### Menu
         root.option_add('*tearOff', FALSE)
@@ -70,6 +72,7 @@ class Application(Frame):
         ezmn_leads = self.ezmn_leads.get()
         en_basics_paid = self.en_basics_paid.get()
         en_basics_unpaid = self.en_basics_unpaid.get()
+        rippln_leads = self.rippln_leads.get()
         
         if ezmf_leads == '1':
             emails.update(ezmn_parser.get_emails())
@@ -81,6 +84,9 @@ class Application(Frame):
             emails.update(en_parser.EN_get_emails(etype="basics_paid"))
         if en_basics_unpaid == '1':
             emails.update(en_parser.EN_get_emails(etype="basics_unpaid"))
+        if rippln_leads == '1':
+            for i in range(1, 13):
+                emails.update(ripple_parser.Ripple_get_emails(ripple=i))
         
         self.emailbox.delete(1.0, END)
         for i, email in enumerate(emails):
