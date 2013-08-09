@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from login_info import RIPPLN_login_info
+import emails_to_file
 
 def Ripple_get_emails(ripple=1):
     session = requests.session()
@@ -19,26 +20,29 @@ def Ripple_get_emails(ripple=1):
     
     if r.url == 'http://www.startmyripple.com/invite/index': # login successful
         print('Success')
-        payload['ripple'] = ripple
-        r = session.post('http://www.startmyripple.com/ripple/godeep', headers=header, data=payload)
-        data = r.text
-        data = data.split('"CustomerId":')
-        del data[0]
         customerIDs = []
-        for id in data:
-            for i, char in enumerate(id):
-                if char == ',':
-                    customerIDs.append(id[0:i])
-                    break
-        print(customerIDs)
+        payload['ripple'] = ripple
+        for page in range(1,20): # TODO: adjust range, so that all customerIDs are captured without running the loop too often
+            payload['page'] = page
+            r = session.post('http://www.startmyripple.com/ripple/godeep', headers=header, data=payload)
+            data = r.text
+            data = data.split('"CustomerId":')
+            del data[0]
+            
+            for id in data:
+                for i, char in enumerate(id):
+                    if char == ',':
+                        customerIDs.append(id[0:i])
+                        break
+#        print(customerIDs)
         emails = []
         for id in customerIDs:
             payload['Id'] = str(id)
             payload['level'] = str(ripple)
-            payload['caller'] = 'slider'
-            payload['sort_name'] = 'DownlineCount'
-            payload['sort_direction'] = '1'
-            payload['page'] = '1'
+#            payload['caller'] = 'slider'
+#             payload['sort_name'] = 'DownlineCount'
+#             payload['sort_direction'] = '1'
+#             payload['page'] = '1'
             r = session.post('http://www.startmyripple.com/ajax/getCustomer', headers=header, data=payload)
             data = r.text
             data = data.split('"Email":"')
@@ -49,7 +53,7 @@ def Ripple_get_emails(ripple=1):
                         emails.append(email[0:i])
                         break
         emails = set(emails)
-        print(emails)
+        return emails
             
     else:
         print("I'm not where I'm supposed to be... FAIL!")
@@ -57,4 +61,8 @@ def Ripple_get_emails(ripple=1):
         print(r.status_code)
     
 if __name__ == "__main__":
-    Ripple_get_emails(ripple=2)
+    result = set()
+    for x in range(1, 13):
+        result.update(Ripple_get_emails(ripple=x))
+    print(emails_to_file.store(result, 'rippln.txt'))
+        
