@@ -12,7 +12,7 @@ You don't have an account yet? Sign up here: http://ezmoneynetwork.com/signup.ph
 
 # BUG: ezmn_parser.py ezmn members doesn't get any email addresses at this point
 
-import requests # doc: http://docs.python-requests.orfg/
+import requests # doc: http://docs.python-requests.org/
 from login_info import EZMN_login_info
 import emails_to_file
 from sys import argv

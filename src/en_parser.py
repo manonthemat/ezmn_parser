@@ -9,7 +9,7 @@ Don't have an account yet?
 Create one here: https://www.empowernetwork.com/join.php?id=manonthemat
 '''
 
-import requests # doc: http://docs.python-requests.orfg/
+import requests # doc: http://docs.python-requests.org/
 from bs4 import BeautifulSoup # http://www.crummy.com/software/BeautifulSoup/
 import emails_to_file
 
@@ -34,9 +34,8 @@ def EN_get_emails(etype="basics_paid"):
         elif etype == 'basics_unpaid':
             r = session.post('https://www.empowernetwork.com/Members/view-team.php?program=U-1&submit=View+Program')
     
-        data = r.text;
         ascii_only = ''
-        for char in data:
+        for char in r.text:
             if ord(char) < 128:
                 ascii_only += char
         
