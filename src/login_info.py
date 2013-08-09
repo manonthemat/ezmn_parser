@@ -17,6 +17,10 @@ EN_PASSWORD = 'YOUR EMPOWER NETWORK PASSWORD'
 GVO_USERNAME = 'YOUR GVO or PureLeverage USERNAME'
 GVO_PASSWORD = 'YOUR GVO or PureLeverage PASSWORD'
 
+# For Rippln - don't have a ripple yet? Contact me for an invite!
+RIPPLN_USERNAME = 'YOUR RIPPLN EMAIL'
+RIPPLN_PASSWORD = 'YOUR RIPPLIN PASSWORD'
+
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # NO ALTERATION BELOW THIS LINES UNLESS YOU KNOW WHAT YOU'RE DOING!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -38,3 +42,10 @@ GVO_login_info = {
                 'user': GVO_USERNAME,
                 'password': GVO_PASSWORD
             }
+            
+RIPPLN_login_info = {
+                'site': "http://www.startmyripple.com/site/login",
+                'user': RIPPLN_USERNAME,
+                'password': RIPPLN_PASSWORD
+            }
+
