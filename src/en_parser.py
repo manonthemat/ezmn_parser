@@ -28,7 +28,7 @@ def EN_get_emails(etype="basics_paid"):
     session = requests.session()
     r = session.post(EN_login_info['site'], data=payload)
     
-    if r.url == 'https://www.empowernetwork.com/Members/index.php': # login successful
+    if r.url != 'https://www.empowernetwork.com/login.php': # login successful
         if etype == 'basics_paid':
             r = session.post('https://www.empowernetwork.com/Members/view-team.php')
         elif etype == 'basics_unpaid':
