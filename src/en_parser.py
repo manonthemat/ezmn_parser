@@ -13,7 +13,8 @@ import requests # doc: http://docs.python-requests.org/
 from bs4 import BeautifulSoup # http://www.crummy.com/software/BeautifulSoup/
 import emails_to_file
 
-from login_info import EN_login_info
+#from login_info import EN_login_info
+from configio import getlogin
 
 def EN_get_emails(etype="basics_paid"):
     '''
@@ -23,10 +24,10 @@ def EN_get_emails(etype="basics_paid"):
     "basics_paid"
     "basics_unpaid"
     '''
-    payload = {'login': EN_login_info['user'], 'pass': EN_login_info['password']}
+    payload = {'login': getlogin('EN', 'EN_USERNAME'), 'pass': getlogin('EN', 'EN_PASSWORD')}
     
     session = requests.session()
-    r = session.post(EN_login_info['site'], data=payload)
+    r = session.post(getlogin('EN', 'EN_site'), data=payload)
     
     if r.url != 'https://www.empowernetwork.com/login.php': # login successful
         if etype == 'basics_paid':

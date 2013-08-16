@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from login_info import RIPPLN_login_info
+from configio import getlogin
 import emails_to_file
 
 def Ripple_get_emails(ripple=1):
@@ -12,10 +12,11 @@ def Ripple_get_emails(ripple=1):
     soup = BeautifulSoup(r.text)
     token = soup.find(type="hidden")
     token = token['value']
-    payload = {'LoginForm[email]': RIPPLN_login_info['user'], 'LoginForm[password]': RIPPLN_login_info['password'], 'YII_CSRF_TOKEN':token}
+    payload = {'LoginForm[email]': getlogin('RIPPLN', 'RIPPLN_USERNAME'),
+               'LoginForm[password]': getlogin('RIPPLN', 'RIPPLN_PASSWORD'),
+               'YII_CSRF_TOKEN':token}
 
-    r = session.post(RIPPLN_login_info['site'], headers=header, data=payload)
-    #r = session.post('http://www.startmyripple.com/ripple/index', data=payload, headers=header, allow_redirects=True)
+    r = session.post(getlogin('RIPPLN', 'RIPPLN_site'), headers=header, data=payload)
     
     
     if r.url == 'http://www.startmyripple.com/invite/index': # login successful
