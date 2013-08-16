@@ -26,11 +26,11 @@ LEADS = 1
 MEMBERS = 2
 
 def get_emails(funnel=EZMF, lead_type=LEADS):
-    payload = {'username': getlogin('EZMN', 'EZMN_USERNAME'), 'password': getlogin('EZMN', 'EZMN_PASSWORD')}
+    payload = {'username': getlogin('EZMN', 'ezmn_username'), 'password': getlogin('EZMN', 'ezmn_password')}
     p2 = {'funnel_id': funnel, 'lead_type': lead_type}
         
     session = requests.session()
-    r = session.post(getlogin('EZMN', 'EZMN_site'), data=payload)
+    r = session.post(getlogin('EZMN', 'ezmn_site'), data=payload)
     if r.url == "http://ezmoneynetwork.com/members/dashboard.php": # login successful
         # go to Lead & Member manager in business center
         r = session.post('http://ezmoneynetwork.com/members/ajax/lead_member.php', data=p2)

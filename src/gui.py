@@ -145,7 +145,7 @@ class Application(Frame):
         self.rippln_user = StringVar()
         self.rippln_user.set(getlogin('RIPPLN', 'rippln_username'))
         self.rippln_pw = StringVar()
-        self.rippln_pw.set(getlogin('RIPPLN', 'rippln_username'))
+        self.rippln_pw.set(getlogin('RIPPLN', 'rippln_password'))
         ttk.Entry(ripplnframe, textvariable=self.rippln_user).grid(column=1, row=0, sticky=W)
         ttk.Entry(ripplnframe, textvariable=self.rippln_pw, show='*').grid(column=1, row=1, sticky=W)
         
