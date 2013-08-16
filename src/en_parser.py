@@ -1,5 +1,5 @@
 '''
-en_parser by Matthias Sieber
+en_parser.py by Matthias Sieber
 
 As part of the EZMN Parser suite.
 
@@ -13,7 +13,6 @@ import requests # doc: http://docs.python-requests.org/
 from bs4 import BeautifulSoup # http://www.crummy.com/software/BeautifulSoup/
 import emails_to_file
 
-#from login_info import EN_login_info
 from configio import getlogin
 
 def EN_get_emails(etype="basics_paid"):

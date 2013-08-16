@@ -1,5 +1,11 @@
 '''
-Graphical User Interface for the parser
+gui.py by Matthias Sieber
+
+Graphical User Interface for the different parser modules
+and the starting point for the average user.
+
+TODO: Read/Write delimiter from config file
+TODO: Make it pretty.
 '''
 
 from tkinter import *
@@ -23,7 +29,7 @@ class Application(Frame):
             
     def createWidgets(self):
         mainframe = Frame(self)
-        mainframe.grid(column=0, row=0, sticky=N+S+W+E)
+        mainframe.grid(column=0, row=0, sticky=N+S+W+E, padx=10, pady=10)
         mainframe.rowconfigure(0, weight=1)
         mainframe.columnconfigure(0, weight=1)
         
@@ -41,7 +47,7 @@ class Application(Frame):
         ttk.Checkbutton(mainframe, text='Empower Network Basic Members (paid)', variable=self.en_basics_paid).grid(column=0, row=4, sticky=W)
         ttk.Checkbutton(mainframe, text='Empower Network Members (unpaid)', variable=self.en_basics_unpaid).grid(column=0, row=5, sticky=W)
         ttk.Checkbutton(mainframe, text='Rippln (very slow... might take a few minutes)', variable=self.rippln_leads).grid(column=0, row=6, sticky=W)
-        ttk.Button(mainframe, text='Collect Emails', command=self.collect).grid(column=0, row=7, columnspan=2)
+        ttk.Button(mainframe, text='Collect Emails', command=self.collect).grid(column=0, row=7, columnspan=2, pady=10)
         
         ttk.Label(mainframe, text='Collected Email addresses below...', padding='0 20 0 0').grid(column=0, row=8, columnspan=2)
         
@@ -107,50 +113,51 @@ class Application(Frame):
     
     def openSettings(self):
         self.settingswindow = Toplevel(self)
-        self.settingswindow.title('EZ Email Parser - Settings')
-        delimiterframe = ttk.Labelframe(self.settingswindow, text='Delimiter')
-        delimiterframe.grid(column=0, row=0)
+        self.settingswindow.title('Settings')
+        delimiterframe = ttk.Labelframe(self.settingswindow, text='Delimiter', padding='30 10 10 10')
+        delimiterframe.grid(column=0, row=0, pady=10)
         self.rDelimiter = StringVar()
         self.rDelimiter.set(self.delimiter)
         ttk.Radiobutton(delimiterframe, text='new line', variable=self.rDelimiter, value='\n').grid(column=0, row=0, sticky=W)
         ttk.Radiobutton(delimiterframe, text='comma', variable=self.rDelimiter, value=',').grid(column=0, row=1, sticky=W)
         ttk.Radiobutton(delimiterframe, text='whitespace', variable=self.rDelimiter, value=' ').grid(column=0, row=2, sticky=W)
         
-        ezmnframe = ttk.Labelframe(self.settingswindow, text='EZ Money Network')
-        ezmnframe.grid(column=0, row=1)
+        ezmnframe = ttk.Labelframe(self.settingswindow, text='EZ Money Network', padding='30 10 10 10')
+        ezmnframe.grid(column=0, row=1, pady=10, padx=5)
         ttk.Label(ezmnframe, text='Username:').grid(column=0, row=0, sticky=W)
         ttk.Label(ezmnframe, text='Password:').grid(column=0, row=1, sticky=W)
         self.ezmn_user = StringVar()
         self.ezmn_user.set(getlogin('EZMN', 'ezmn_username'))
         self.ezmn_pw = StringVar()
         self.ezmn_pw.set(getlogin('EZMN', 'ezmn_password'))
-        ttk.Entry(ezmnframe, textvariable=self.ezmn_user).grid(column=1, row=0, sticky=W)
-        ttk.Entry(ezmnframe, textvariable=self.ezmn_pw, show='*').grid(column=1, row=1, sticky=W)
+        ttk.Entry(ezmnframe, textvariable=self.ezmn_user, width=26).grid(column=1, row=0, sticky=W)
+        ttk.Entry(ezmnframe, textvariable=self.ezmn_pw, width=26, show='*').grid(column=1, row=1, sticky=W)
         
-        enframe = ttk.Labelframe(self.settingswindow, text='Empower Network')
-        enframe.grid(column=0, row=2)
+        enframe = ttk.Labelframe(self.settingswindow, text='Empower Network', padding='30 10 10 10')
+        enframe.grid(column=0, row=2, pady=10, padx=5)
         ttk.Label(enframe, text='Username:').grid(column=0, row=0, sticky=W)
         ttk.Label(enframe, text='Password:').grid(column=0, row=1, sticky=W)
         self.en_user = StringVar()
         self.en_user.set(getlogin('EN', 'en_username'))
         self.en_pw = StringVar()
         self.en_pw.set(getlogin('EN', 'en_password'))
-        ttk.Entry(enframe, textvariable=self.en_user).grid(column=1, row=0, sticky=W)
-        ttk.Entry(enframe, textvariable=self.en_pw, show='*').grid(column=1, row=1, sticky=W)        
+        ttk.Entry(enframe, textvariable=self.en_user, width=26).grid(column=1, row=0, sticky=W)
+        ttk.Entry(enframe, textvariable=self.en_pw, width=26, show='*').grid(column=1, row=1, sticky=W)        
         
-        ripplnframe = ttk.Labelframe(self.settingswindow, text='Rippln')
-        ripplnframe.grid(column=0, row=3)
-        ttk.Label(ripplnframe, text='Username:').grid(column=0, row=0, sticky=W)
+        ripplnframe = ttk.Labelframe(self.settingswindow, text='Rippln', padding='30 10 10 10')
+        ripplnframe.grid(column=0, row=3, pady=10, padx=5)
+        ttk.Label(ripplnframe, text='Email:').grid(column=0, row=0, sticky=W)
         ttk.Label(ripplnframe, text='Password:').grid(column=0, row=1, sticky=W)
         self.rippln_user = StringVar()
         self.rippln_user.set(getlogin('RIPPLN', 'rippln_username'))
         self.rippln_pw = StringVar()
         self.rippln_pw.set(getlogin('RIPPLN', 'rippln_password'))
-        ttk.Entry(ripplnframe, textvariable=self.rippln_user).grid(column=1, row=0, sticky=W)
-        ttk.Entry(ripplnframe, textvariable=self.rippln_pw, show='*').grid(column=1, row=1, sticky=W)
+        ttk.Entry(ripplnframe, textvariable=self.rippln_user, width=26).grid(column=1, row=0, sticky=W)
+        ttk.Entry(ripplnframe, textvariable=self.rippln_pw, width=26, show='*').grid(column=1, row=1, sticky=W)
         
-        ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid(column=0, row=100)
-
+        ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid(column=0, row=100, pady=10)
+        
+        self.settingswindow.focus()
         
     def saveSettings(self):
         self.delimiter = self.rDelimiter.get()

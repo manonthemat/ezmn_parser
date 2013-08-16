@@ -1,3 +1,14 @@
+'''
+ripple_parser.py by Matthias Sieber
+
+This program will log into your Rippln account and get email addresses of your 'ripple'.
+
+As of right now this is the slowest parser within the ezmn_parser suite (which really should be renamed)
+due to the many requests that are being sent.
+
+It's also noteworthy that the startmyripple.com website has a csrf protection which was new to me.
+'''
+
 import requests
 from bs4 import BeautifulSoup
 from configio import getlogin

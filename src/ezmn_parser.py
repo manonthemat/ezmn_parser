@@ -1,16 +1,17 @@
 '''
-ezmn_parser by Matthias Sieber
+ezmn_parser.py by Matthias Sieber
 
 This program will log into your EZ Money Network account and get the stored
 lead and membership information.
 
-Found Email Addresses will be then stored in a text file.
+Found Email Addresses will be then stored in a text file if run by itself.
+The first lines of code were written in this module.
+Now it's main purpose is to provide the get_emails() function for the gui,
+so users can get the emails of their leads and members within the EZ Money Network (incl. EZMF).
 
 The EZ Money Network is a free system for GVO, PureLeverage and Empower Network affiliates.
 You don't have an account yet? Sign up here: http://ezmoneynetwork.com/signup.php?user=manonthemat
 '''
-
-# BUG: ezmn_parser.py ezmn members doesn't get any email addresses at this point
 
 import requests # doc: http://docs.python-requests.org/
 from configio import getlogin
