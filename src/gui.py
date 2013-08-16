@@ -11,6 +11,7 @@ import ezmn_parser
 import en_parser
 import emails_to_file
 import ripple_parser
+from configio import getlogin, setlogin
 
 class Application(Frame):
     delimiter = '\n'
@@ -114,10 +115,51 @@ class Application(Frame):
         ttk.Radiobutton(delimiterframe, text='new line', variable=self.rDelimiter, value='\n').grid(column=0, row=0, sticky=W)
         ttk.Radiobutton(delimiterframe, text='comma', variable=self.rDelimiter, value=',').grid(column=0, row=1, sticky=W)
         ttk.Radiobutton(delimiterframe, text='whitespace', variable=self.rDelimiter, value=' ').grid(column=0, row=2, sticky=W)
-        ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid()
+        
+        ezmnframe = ttk.Labelframe(self.settingswindow, text='EZ Money Network')
+        ezmnframe.grid(column=0, row=1)
+        ttk.Label(ezmnframe, text='Username:').grid(column=0, row=0, sticky=W)
+        ttk.Label(ezmnframe, text='Password:').grid(column=0, row=1, sticky=W)
+        self.ezmn_user = StringVar()
+        self.ezmn_user.set(getlogin('EZMN', 'ezmn_username'))
+        self.ezmn_pw = StringVar()
+        self.ezmn_pw.set(getlogin('EZMN', 'ezmn_password'))
+        ttk.Entry(ezmnframe, textvariable=self.ezmn_user).grid(column=1, row=0, sticky=W)
+        ttk.Entry(ezmnframe, textvariable=self.ezmn_pw, show='*').grid(column=1, row=1, sticky=W)
+        
+        enframe = ttk.Labelframe(self.settingswindow, text='Empower Network')
+        enframe.grid(column=0, row=2)
+        ttk.Label(enframe, text='Username:').grid(column=0, row=0, sticky=W)
+        ttk.Label(enframe, text='Password:').grid(column=0, row=1, sticky=W)
+        self.en_user = StringVar()
+        self.en_user.set(getlogin('EN', 'en_username'))
+        self.en_pw = StringVar()
+        self.en_pw.set(getlogin('EN', 'en_password'))
+        ttk.Entry(enframe, textvariable=self.en_user).grid(column=1, row=0, sticky=W)
+        ttk.Entry(enframe, textvariable=self.en_pw, show='*').grid(column=1, row=1, sticky=W)        
+        
+        ripplnframe = ttk.Labelframe(self.settingswindow, text='Rippln')
+        ripplnframe.grid(column=0, row=3)
+        ttk.Label(ripplnframe, text='Username:').grid(column=0, row=0, sticky=W)
+        ttk.Label(ripplnframe, text='Password:').grid(column=0, row=1, sticky=W)
+        self.rippln_user = StringVar()
+        self.rippln_user.set(getlogin('RIPPLN', 'rippln_username'))
+        self.rippln_pw = StringVar()
+        self.rippln_pw.set(getlogin('RIPPLN', 'rippln_username'))
+        ttk.Entry(ripplnframe, textvariable=self.rippln_user).grid(column=1, row=0, sticky=W)
+        ttk.Entry(ripplnframe, textvariable=self.rippln_pw, show='*').grid(column=1, row=1, sticky=W)
+        
+        ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid(column=0, row=100)
+
         
     def saveSettings(self):
         self.delimiter = self.rDelimiter.get()
+        setlogin('EZMN','ezmn_username', self.ezmn_user.get())
+        setlogin('EZMN','ezmn_password', self.ezmn_pw.get())
+        setlogin('EN','en_username', self.en_user.get())
+        setlogin('EN','en_password', self.en_pw.get())
+        setlogin('RIPPLN','rippln_username', self.rippln_user.get())
+        setlogin('RIPPLN','rippln_username', self.rippln_pw.get())
         self.settingswindow.destroy()
 
 root = Tk()

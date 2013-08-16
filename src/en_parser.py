@@ -24,10 +24,10 @@ def EN_get_emails(etype="basics_paid"):
     "basics_paid"
     "basics_unpaid"
     '''
-    payload = {'login': getlogin('EN', 'EN_USERNAME'), 'pass': getlogin('EN', 'EN_PASSWORD')}
+    payload = {'login': getlogin('EN', 'en_username'), 'pass': getlogin('EN', 'en_password')}
     
     session = requests.session()
-    r = session.post(getlogin('EN', 'EN_site'), data=payload)
+    r = session.post(getlogin('EN', 'en_site'), data=payload)
     
     if r.url != 'https://www.empowernetwork.com/login.php': # login successful
         if etype == 'basics_paid':

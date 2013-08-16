@@ -12,11 +12,11 @@ def Ripple_get_emails(ripple=1):
     soup = BeautifulSoup(r.text)
     token = soup.find(type="hidden")
     token = token['value']
-    payload = {'LoginForm[email]': getlogin('RIPPLN', 'RIPPLN_USERNAME'),
-               'LoginForm[password]': getlogin('RIPPLN', 'RIPPLN_PASSWORD'),
+    payload = {'LoginForm[email]': getlogin('RIPPLN', 'rippln_username'),
+               'LoginForm[password]': getlogin('RIPPLN', 'rippln_password'),
                'YII_CSRF_TOKEN':token}
 
-    r = session.post(getlogin('RIPPLN', 'RIPPLN_site'), headers=header, data=payload)
+    r = session.post(getlogin('RIPPLN', 'rippln_site'), headers=header, data=payload)
     
     
     if r.url == 'http://www.startmyripple.com/invite/index': # login successful
