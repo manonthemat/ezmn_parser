@@ -19,11 +19,11 @@ import ezmn_parser
 import en_parser
 import emails_to_file
 import ripple_parser
-from configio import getlogin, setlogin
+from configio import getlogin, setlogin, getdelimiter, setdelimiter
 
 class Application(Frame):
-    delimiter = '\n'
-        
+    delimiter = getdelimiter()
+            
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.grid()
@@ -212,6 +212,7 @@ class Application(Frame):
         setlogin('EN','en_password', self.en_pw.get())
         setlogin('RIPPLN','rippln_username', self.rippln_user.get())
         setlogin('RIPPLN','rippln_password', self.rippln_pw.get())
+        setdelimiter(self.delimiter)
         self.settingswindow.destroy()
         
     def join_en(self):

@@ -10,6 +10,7 @@ At this time, these affiliate programs are supported:
 
 Most users will most likely just want to use the gui.
 To do so, run this command in the src folder:
+
     python gui.py
 
 REQUIREMENTS

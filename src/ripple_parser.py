@@ -46,15 +46,10 @@ def Ripple_get_emails(ripple=1):
                     if char == ',':
                         customerIDs.append(id[0:i])
                         break
-#        print(customerIDs)
         emails = []
         for id in customerIDs:
             payload['Id'] = str(id)
             payload['level'] = str(ripple)
-#            payload['caller'] = 'slider'
-#             payload['sort_name'] = 'DownlineCount'
-#             payload['sort_direction'] = '1'
-#             payload['page'] = '1'
             r = session.post('http://www.startmyripple.com/ajax/getCustomer', headers=header, data=payload)
             data = r.text
             data = data.split('"Email":"')

@@ -13,6 +13,9 @@ The setlogin function is used in the settings-menu of the gui.
 Please be aware that calling setlogin() removes all the comments in the login_info.ini
 and attributes (keys) will be lowercase.
 
+The other two functions getdelimiter() and setdelimiter() define the delimiter of the
+parsed Email addresses.
+
 TODO: Read/Write the delimiter into the config file, too.
 '''
 
@@ -31,6 +34,30 @@ def setlogin(funnel, data, value):
     config[funnel][data] = value
     with open('login_info.ini', 'w') as configfile:
         config.write(configfile)
+        
+def getdelimiter():
+    config = configparser.ConfigParser()
+    config.read('login_info.ini')
+    delimiter = config['DELIMITER']['delimiter']
+    if delimiter == 'new line':
+        return '\n'
+    elif delimiter == 'comma':
+        return ','
+    else:
+        return ' '
+    
+def setdelimiter(delimiter):
+    config = configparser.ConfigParser()
+    config.read('login_info.ini')
+    if delimiter == '\n':
+        delimiter = 'new line'
+    elif delimiter == ',':
+        delimiter = 'comma'
+    else:
+        delimiter = 'whitespace'
+    config['DELIMITER']['delimiter'] = delimiter
+    with open('login_info.ini', 'w') as configfile:
+        config.write(configfile) 
 
 if __name__ == "__main__":
     print('Your EN Username:', getlogin('EN', 'en_username'))
