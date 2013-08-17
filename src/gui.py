@@ -13,6 +13,8 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter.messagebox import showwarning
 
+import webbrowser
+
 import ezmn_parser
 import en_parser
 import emails_to_file
@@ -126,34 +128,40 @@ class Application(Frame):
         ezmnframe.grid(column=0, row=1, pady=10, padx=5)
         ttk.Label(ezmnframe, text='Username:').grid(column=0, row=0, sticky=W)
         ttk.Label(ezmnframe, text='Password:').grid(column=0, row=1, sticky=W)
+        ttk.Label(ezmnframe, text="No account?").grid(column=0, row=2, sticky=W)
         self.ezmn_user = StringVar()
         self.ezmn_user.set(getlogin('EZMN', 'ezmn_username'))
         self.ezmn_pw = StringVar()
         self.ezmn_pw.set(getlogin('EZMN', 'ezmn_password'))
         ttk.Entry(ezmnframe, textvariable=self.ezmn_user, width=26).grid(column=1, row=0, sticky=W)
         ttk.Entry(ezmnframe, textvariable=self.ezmn_pw, width=26, show='*').grid(column=1, row=1, sticky=W)
+        ttk.Button(ezmnframe, text="Sign up (FREE)!", command=self.join_ezmf).grid(column=1, row=2, sticky=W)
         
         enframe = ttk.Labelframe(self.settingswindow, text='Empower Network', padding='30 10 10 10')
         enframe.grid(column=0, row=2, pady=10, padx=5)
         ttk.Label(enframe, text='Username:').grid(column=0, row=0, sticky=W)
         ttk.Label(enframe, text='Password:').grid(column=0, row=1, sticky=W)
+        ttk.Label(enframe, text="No account?").grid(column=0, row=2, sticky=W)
         self.en_user = StringVar()
         self.en_user.set(getlogin('EN', 'en_username'))
         self.en_pw = StringVar()
         self.en_pw.set(getlogin('EN', 'en_password'))
         ttk.Entry(enframe, textvariable=self.en_user, width=26).grid(column=1, row=0, sticky=W)
-        ttk.Entry(enframe, textvariable=self.en_pw, width=26, show='*').grid(column=1, row=1, sticky=W)        
+        ttk.Entry(enframe, textvariable=self.en_pw, width=26, show='*').grid(column=1, row=1, sticky=W)
+        ttk.Button(enframe, text="Sign up here!", command=self.join_en).grid(column=1, row=2, sticky=W)        
         
         ripplnframe = ttk.Labelframe(self.settingswindow, text='Rippln', padding='30 10 10 10')
         ripplnframe.grid(column=0, row=3, pady=10, padx=5)
         ttk.Label(ripplnframe, text='Email:').grid(column=0, row=0, sticky=W)
         ttk.Label(ripplnframe, text='Password:').grid(column=0, row=1, sticky=W)
+        ttk.Label(ripplnframe, text="No account?").grid(column=0, row=2, sticky=W)
         self.rippln_user = StringVar()
         self.rippln_user.set(getlogin('RIPPLN', 'rippln_username'))
         self.rippln_pw = StringVar()
         self.rippln_pw.set(getlogin('RIPPLN', 'rippln_password'))
         ttk.Entry(ripplnframe, textvariable=self.rippln_user, width=26).grid(column=1, row=0, sticky=W)
         ttk.Entry(ripplnframe, textvariable=self.rippln_pw, width=26, show='*').grid(column=1, row=1, sticky=W)
+        ttk.Button(ripplnframe, text="Sign up here!", command=self.join_rippln).grid(column=1, row=2, sticky=W)
         
         ttk.Button(self.settingswindow, text='Save settings', command=self.saveSettings).grid(column=0, row=100, pady=10)
         
@@ -168,6 +176,15 @@ class Application(Frame):
         setlogin('RIPPLN','rippln_username', self.rippln_user.get())
         setlogin('RIPPLN','rippln_username', self.rippln_pw.get())
         self.settingswindow.destroy()
+        
+    def join_en(self):
+        webbrowser.open('https://www.empowernetwork.com/join.php?id=manonthemat', autoraise=True)
+        
+    def join_ezmf(self):
+        webbrowser.open('http://ezmoneynetwork.com/signup.php?user=manonthemat', autoraise=True)
+        
+    def join_rippln(self):
+        webbrowser.open('http://www.startmyripple.com/blitzlink/792e3c8bc5586a588a0fca7e3f17f4be', autoraise=True)
 
 root = Tk()
 root.title('EZ Email Parser')
