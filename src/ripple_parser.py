@@ -69,8 +69,7 @@ def Ripple_get_emails(ripple=1):
             
     else:
         print("I'm not where I'm supposed to be... FAIL!")
-        print(r.url)
-        print(r.status_code)
+        return 'FAIL'
     
 if __name__ == "__main__":
     result = set()

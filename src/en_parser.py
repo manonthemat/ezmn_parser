@@ -66,7 +66,7 @@ def EN_get_emails(etype="basics_paid"):
     else:
         print(r.url)
         print('Login not successful... Please check your settings in the file login_info.py')
-        exit(0)
+        return 'FAIL'
     
     
     

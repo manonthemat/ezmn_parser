@@ -62,6 +62,7 @@ def get_emails(funnel=EZMF, lead_type=LEADS):
             return emails
     else:
         print('Login not successful... Please check your settings in the file login_info.py')
+        return('FAIL')
 
 def get_all():
     '''

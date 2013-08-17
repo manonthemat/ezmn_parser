@@ -11,7 +11,7 @@ TODO: Make it pretty.
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
-from tkinter.messagebox import showwarning
+from tkinter.messagebox import showwarning, showerror
 
 import webbrowser
 
@@ -83,24 +83,61 @@ class Application(Frame):
         en_basics_unpaid = self.en_basics_unpaid.get()
         rippln_leads = self.rippln_leads.get()
         
+        login_error = set()
+        
         if ezmf_leads == '1':
-            emails.update(ezmn_parser.get_emails())
+            mails = ezmn_parser.get_emails()
+            if mails != 'FAIL':
+                emails.update(mails)
+            else:
+                login_error.add('EZ Money Network')
         if ezmf_members == '1':
-            emails.update(ezmn_parser.get_emails(funnel=1, lead_type=2))
+            mails = ezmn_parser.get_emails(funnel=1, lead_type=2)
+            if mails != 'FAIL':
+                emails.update(mails)
+            else:
+                login_error.add('EZ Money Network')
         if ezmn_leads == '1':
-            emails.update(ezmn_parser.get_emails(funnel=5, lead_type=1))
+            mails = ezmn_parser.get_emails(funnel=5, lead_type=1)
+            if mails != 'FAIL':
+                emails.update(mails)
+            else:
+                login_error.add('EZ Money Network')
         if en_basics_paid == '1':
-            emails.update(en_parser.EN_get_emails(etype="basics_paid"))
+            mails = en_parser.EN_get_emails(etype="basics_paid")
+            if mails != 'FAIL':
+                emails.update(mails)
+            else:
+                login_error.add('Empower Network')
         if en_basics_unpaid == '1':
-            emails.update(en_parser.EN_get_emails(etype="basics_unpaid"))
+            mails = en_parser.EN_get_emails(etype="basics_unpaid")
+            if mails != 'FAIL':
+                emails.update(mails)
+            else:
+                login_error.add('Empower Network')
         if rippln_leads == '1':
             for i in range(1, 13):
-                emails.update(ripple_parser.Ripple_get_emails(ripple=i))
+                mails = ripple_parser.Ripple_get_emails(ripple=i)
+                if mails != 'FAIL':
+                    emails.update(mails)
+                else:
+                    login_error.add('Rippln')
+                    break
+        
+        try:
+            if len(login_error) > 0:
+                error_title = 'Login not successful'
+                error_message = 'Please check your '+', '.join(login_error)+' settings'
+                showerror(error_title, error_message)
+        except:
+            pass
         
         self.emailbox.delete(1.0, END)
         for i, email in enumerate(emails):
             self.emailbox.insert(END, email+'\n')
         self.amount_emails.set(i+1)
+        
+        
 
     def saveToFile(self):
         # check if Emails are collected
@@ -174,7 +211,7 @@ class Application(Frame):
         setlogin('EN','en_username', self.en_user.get())
         setlogin('EN','en_password', self.en_pw.get())
         setlogin('RIPPLN','rippln_username', self.rippln_user.get())
-        setlogin('RIPPLN','rippln_username', self.rippln_pw.get())
+        setlogin('RIPPLN','rippln_password', self.rippln_pw.get())
         self.settingswindow.destroy()
         
     def join_en(self):
