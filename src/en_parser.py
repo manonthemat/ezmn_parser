@@ -33,25 +33,20 @@ def EN_get_emails(etype="basics_paid"):
             r = session.post('https://www.empowernetwork.com/Members/view-team.php')
         elif etype == 'basics_unpaid':
             r = session.post('https://www.empowernetwork.com/Members/view-team.php?program=U-1&submit=View+Program')
-    
-        ascii_only = ''
-        for char in r.text:
-            if ord(char) < 128:
-                ascii_only += char
         
         emails = set()
         
         #for unpaid members (using Beautiful Soup 4)
         if 'unpaid' in etype:
-            soup = BeautifulSoup(ascii_only)
+            soup = BeautifulSoup(r.text)
             soup = soup.find_all('td', colspan='2')
             for email in soup:
                 emails.add(email.string.strip())
                     
         #for paid members
         else:
-            ascii_only = ascii_only.split('<td colspan="2">')
-            for x in ascii_only:
+            tds = r.text.split('<td colspan="2">')
+            for x in tds:
                 s = -1 # used to find the first valid character for the Email address
                 if '@' in x:
                     for i, e in enumerate(x): # getting the Email address out of the string
@@ -65,7 +60,7 @@ def EN_get_emails(etype="basics_paid"):
     
     else:
         print(r.url)
-        print('Login not successful... Please check your settings in the file login_info.py')
+        print('Login not successful... Please check your settings in the file login_info.ini')
         return 'FAIL'
     
     

@@ -37,8 +37,7 @@ def Ripple_get_emails(ripple=1):
         for page in range(1,20): # TODO: adjust range, so that all customerIDs are captured without running the loop too often
             payload['page'] = page
             r = session.post('http://www.startmyripple.com/ripple/godeep', headers=header, data=payload)
-            data = r.text
-            data = data.split('"CustomerId":')
+            data = r.text.split('"CustomerId":')
             del data[0]
             
             for id in data:
@@ -53,17 +52,16 @@ def Ripple_get_emails(ripple=1):
             r = session.post('http://www.startmyripple.com/ajax/getCustomer', headers=header, data=payload)
             data = r.text
             data = data.split('"Email":"')
-            del data[0]
-            for email in data:    
-                for i, char in enumerate(email):
-                    if char == '"':
-                        emails.append(email[0:i])
-                        break
+            
+            for i, char in enumerate(data[1]):
+                if char == '"':
+                    emails.append(data[1][0:i])
+                    break
         emails = set(emails)
         return emails
             
     else:
-        print("I'm not where I'm supposed to be... FAIL!")
+        print('Login not successful... Please check your settings in the file login_info.ini')
         return 'FAIL'
     
 if __name__ == "__main__":
