@@ -38,15 +38,13 @@ def EN_get_emails(etype="basics_paid"):
         
         #for unpaid members (using Beautiful Soup 4)
         if 'unpaid' in etype:
-            soup = BeautifulSoup(r.text)
-            soup = soup.find_all('td', colspan='2')
+            soup = BeautifulSoup(r.text).find_all('td', colspan='2')
             for email in soup:
                 emails.add(email.string.strip())
                     
         #for paid members
         else:
-            tds = r.text.split('<td colspan="2">')
-            for x in tds:
+            for x in r.text.split('<td colspan="2">'):
                 s = -1 # used to find the first valid character for the Email address
                 if '@' in x:
                     for i, e in enumerate(x): # getting the Email address out of the string

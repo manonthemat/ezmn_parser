@@ -15,8 +15,6 @@ and attributes (keys) will be lowercase.
 
 The other two functions getdelimiter() and setdelimiter() define the delimiter of the
 parsed Email addresses.
-
-TODO: Read/Write the delimiter into the config file, too.
 '''
 
 import configparser

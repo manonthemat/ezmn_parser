@@ -4,7 +4,6 @@ gui.py by Matthias Sieber
 Graphical User Interface for the different parser modules
 and the starting point for the average user.
 
-TODO: Read/Write delimiter from config file
 TODO: Make it pretty.
 '''
 
@@ -48,7 +47,7 @@ class Application(Frame):
         ttk.Checkbutton(mainframe, text='EZ Money Network Leads', variable=self.ezmn_leads).grid(column=0, row=3, sticky=W)
         ttk.Checkbutton(mainframe, text='Empower Network Basic Members (paid)', variable=self.en_basics_paid).grid(column=0, row=4, sticky=W)
         ttk.Checkbutton(mainframe, text='Empower Network Members (unpaid)', variable=self.en_basics_unpaid).grid(column=0, row=5, sticky=W)
-        ttk.Checkbutton(mainframe, text='Rippln (very slow... might take a few minutes)', variable=self.rippln_leads).grid(column=0, row=6, sticky=W)
+        ttk.Checkbutton(mainframe, text='Rippln (this may take a few minutes)', variable=self.rippln_leads).grid(column=0, row=6, sticky=W)
         ttk.Button(mainframe, text='Collect Emails', command=self.collect).grid(column=0, row=7, columnspan=2, pady=10)
         
         ttk.Label(mainframe, text='Collected Email addresses below...', padding='0 20 0 0').grid(column=0, row=8, columnspan=2)
