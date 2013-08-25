@@ -223,7 +223,8 @@ class Application(Frame):
     def join_rippln(self):
         webbrowser.open('http://www.startmyripple.com/blitzlink/792e3c8bc5586a588a0fca7e3f17f4be', autoraise=True)
 
-root = Tk()
-root.title('EZ Email Parser')
-app = Application(master=root)
-app.mainloop(0)
+if __name__ == "__main__":
+    root = Tk()
+    root.title('EZ Email Parser')
+    app = Application(master=root)
+    app.mainloop(0)
